@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+venv/
+.env
+.envrc
+
+# IDEs / editors
+.vscode/
+.idea/
+*.iml
+
+# Airflow / DAG artifacts
+logs/
+airflow.db
+dags/__pycache__/
+
+# data
+data/
+# if you only want to ignore certain subfolders, adjust accordingly:
+# data/raw/
+# data/processed/
+
+# OS
+.DS_Store
+Thumbs.db
