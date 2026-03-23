@@ -7,6 +7,8 @@ services:
       POSTGRES_DB: airflow
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"   # ✅ IMPORTANT FIX
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U airflow"]
       interval: 10s
@@ -28,32 +30,50 @@ services:
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data  
+      - ./data:/opt/airflow/data
 
   webserver:
     image: ${AIRFLOW_IMAGE_NAME}
     depends_on: [airflow-init]
     environment:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+
+      AIRFLOW__EMAIL__EMAIL_BACKEND: airflow.utils.email.send_email_smtp
+      AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
+      AIRFLOW__SMTP__SMTP_STARTTLS: "True"
+      AIRFLOW__SMTP__SMTP_SSL: "False"
+      AIRFLOW__SMTP__SMTP_USER: shaiksadaf1789@gmail.com
+      AIRFLOW__SMTP__SMTP_PASSWORD: xfla zrbn hypv izaj
+      AIRFLOW__SMTP__SMTP_PORT: 587
+
     command: webserver
     ports: ["8080:8080"]
     user: "${AIRFLOW_UID:-50000}"
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data 
+      - ./data:/opt/airflow/data
 
   scheduler:
     image: ${AIRFLOW_IMAGE_NAME}
     depends_on: [webserver]
     environment:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+
+      AIRFLOW__EMAIL__EMAIL_BACKEND: airflow.utils.email.send_email_smtp
+      AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
+      AIRFLOW__SMTP__SMTP_STARTTLS: "True"
+      AIRFLOW__SMTP__SMTP_SSL: "False"
+      AIRFLOW__SMTP__SMTP_USER: shaiksadaf1789@gmail.com
+      AIRFLOW__SMTP__SMTP_PASSWORD: xfla zrbn hypv izaj
+      AIRFLOW__SMTP__SMTP_PORT: 587
+
     command: scheduler
     user: "${AIRFLOW_UID:-50000}"
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
-      - ./data:/opt/airflow/data 
+      - ./data:/opt/airflow/data
 
 volumes:
   pgdata:
