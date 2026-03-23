@@ -22,6 +22,8 @@ def get_data():
 
     query = "SELECT * FROM retail_data"
     df = pd.read_sql(query, conn)
+    df = pd.read_csv("data/processed/cleaned_retail.csv")
+    df["invoicedate"] = pd.to_datetime(df["invoicedate"])
     conn.close()
     return df
 
