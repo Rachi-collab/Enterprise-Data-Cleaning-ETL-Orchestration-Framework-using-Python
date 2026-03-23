@@ -10,21 +10,11 @@ st.set_page_config(page_title="Retail Dashboard", layout="wide")
 # -------------------------------
 # DATABASE CONNECTION
 # -------------------------------
+
 @st.cache_data
 def get_data():
-    conn = psycopg2.connect(
-        host="localhost",
-        database="airflow",
-        user="airflow",
-        password="airflow",
-        port=5432
-    )
-
-    query = "SELECT * FROM retail_data"
-    df = pd.read_sql(query, conn)
     df = pd.read_csv("data/processed/cleaned_retail.csv")
     df["invoicedate"] = pd.to_datetime(df["invoicedate"])
-    conn.close()
     return df
 
 df = get_data()
