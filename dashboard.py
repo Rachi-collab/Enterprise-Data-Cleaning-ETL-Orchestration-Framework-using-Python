@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import psycopg2
 
 # -------------------------------
 # PAGE CONFIG
@@ -8,21 +7,21 @@ import psycopg2
 st.set_page_config(page_title="Retail Dashboard", layout="wide")
 
 # -------------------------------
-# DATABASE CONNECTION
+# LOAD DATA
 # -------------------------------
-
 @st.cache_data
 def get_data():
     df = pd.read_csv("data/processed/cleaned_retail.csv")
-    df["invoicedate"] = pd.to_datetime(df["invoicedate"])
+
+    # ✅ Standardize column names (VERY IMPORTANT)
+    df.columns = df.columns.str.lower().str.replace(" ", "_")
+
+    # ✅ Convert date column
+    df["invoicedate"] = pd.to_datetime(df["invoicedate"], errors="coerce")
+
     return df
 
 df = get_data()
-
-# -------------------------------
-# DATA PREPARATION
-# -------------------------------
-df["invoicedate"] = pd.to_datetime(df["invoicedate"])
 
 # -------------------------------
 # TITLE
@@ -44,8 +43,8 @@ filtered_df = df[
 
 country_list = st.sidebar.multiselect(
     "Select Country",
-    options=filtered_df["country"].unique(),
-    default=filtered_df["country"].unique()
+    options=filtered_df["country"].dropna().unique(),
+    default=filtered_df["country"].dropna().unique()
 )
 
 filtered_df = filtered_df[filtered_df["country"].isin(country_list)]
