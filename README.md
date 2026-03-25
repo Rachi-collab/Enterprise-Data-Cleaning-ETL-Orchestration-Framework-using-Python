@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📊 Enterprise Data Cleaning & ETL Orchestration Framework
 
 ![GitHub stars](https://img.shields.io/github/stars/SadiyaSadaf17/ETL-Project?style=social)
@@ -213,3 +214,7 @@ streamlit run dashboard.py
 ## ⭐ If you like this project
 
 Give it a star on GitHub ⭐
+=======
+# Enterprise-Data-Cleaning-ETL-Orchestration-Framework-using-Python
+Enterprise Data Cleaning &amp; ETL Orchestration Framework using Python, Apache Airflow, PostgreSQL, and Streamlit. Automates data extraction, transformation, loading, and provides real-time insights with monitoring and dashboard visualization.
+>>>>>>> db88adf3845a2a91c627faa30515ecbaf0ec6ba5
